@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>건축 포트폴리오 | 건축가 홍길동</title>
+    
+    <!-- Tailwind CSS 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind 설정 커스터마이징 (폰트, 색상 등) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'Pretendard', 'Apple SD Gothic Neo', 'sans-serif'],
+                        serif: ['Noto Serif KR', 'serif'],
+                    },
+                    colors: {
+                        arch: {
+                            50: '#f8f9fa',
+                            100: '#f1f3f5',
+                            200: '#e9ecef',
+                            300: '#dee2e6',
+                            400: '#ced4da',
+                            500: '#adb5bd',
+                            600: '#868e96',
+                            700: '#495057',
+                            800: '#343a40',
+                            900: '#212529',
+                            DEFAULT: '#212529', // 기본 텍스트 색상
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts 로드 (Noto Sans KR, Noto Serif KR) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- 아이콘 폰트 로드 (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 커스텀 CSS -->
+    <style>
+        /* 미니멀한 스크롤바 스타일링 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f3f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #adb5bd;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #868e96;
+        }
+
+        /* 페이드 인 애니메이션 클래스 */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 네비게이션 바 블러 효과 (브라우저 호환성) */
+        .glass-nav {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* 프로젝트 이미지 호버 효과 강화 */
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-arch font-sans antialiased selection:bg-arch-200 selection:text-arch-900">
+
+    <!-- Header / Navigation -->
+    <header class="fixed w-full top-0 z-50 transition-all duration-300 glass-nav border-b border-gray-100" id="header">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-xl font-serif font-bold tracking-wider text-arch-900">
+                Hong GilDong<span class="text-arch-400">.</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="text-sm font-medium text-arch-600 hover:text-arch-900 transition-colors uppercase tracking-widest">Home</a>
+                <a href="#projects" class="text-sm font-medium text-arch-600 hover:text-arch-900 transition-colors uppercase tracking-widest">Projects</a>
+                <a href="#about" class="text-sm font-medium text-arch-600 hover:text-arch-900 transition-colors uppercase tracking-widest">About</a>
+                <a href="#contact" class="text-sm font-medium text-arch-600 hover:text-arch-900 transition-colors uppercase tracking-widest">Contact</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-arch-900 focus:outline-none" id="mobile-menu-btn" aria-label="메뉴 열기">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div class="md:hidden hidden bg-white absolute w-full border-b border-gray-100 shadow-lg" id="mobile-menu">
+            <div class="px-4 py-2 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-4 text-base font-medium text-arch-800 hover:text-arch-900 hover:bg-gray-50 border-b border-gray-50">Home</a>
+                <a href="#projects" class="block px-3 py-4 text-base font-medium text-arch-800 hover:text-arch-900 hover:bg-gray-50 border-b border-gray-50">Projects</a>
+                <a href="#about" class="block px-3 py-4 text-base font-medium text-arch-800 hover:text-arch-900 hover:bg-gray-50 border-b border-gray-50">About</a>
+                <a href="#contact" class="block px-3 py-4 text-base font-medium text-arch-800 hover:text-arch-900 hover:bg-gray-50">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="relative h-screen min-h-[600px] flex items-center justify-center pt-20">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2069&auto=format&fit=crop" alt="대표 건축물 배경" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-white/70 backdrop-blur-sm"></div> <!-- 오버레이 -->
+            </div>
+
+            <!-- Content -->
+            <div class="container mx-auto px-6 relative z-10 text-center fade-in-up">
+                <p class="text-sm md:text-base font-medium tracking-[0.3em] uppercase text-arch-500 mb-4">Architecture Portfolio</p>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-light leading-tight text-arch-900 mb-6">
+                    공간에 숨결을 불어넣고,<br />
+                    <span class="font-bold italic">사람을 향하는 디자인.</span>
+                </h1>
+                <p class="mt-4 text-lg md:text-xl text-arch-600 max-w-2xl mx-auto font-light leading-relaxed">
+                    단순한 형태를 넘어 사용자의 삶과 조화를 이루는 지속 가능한 건축을 추구합니다.
+                </p>
+                <div class="mt-12">
+                    <a href="#projects" class="inline-block px-8 py-4 border border-arch-900 text-arch-900 hover:bg-arch-900 hover:text-white transition-all duration-300 font-medium tracking-wider uppercase text-sm">
+                        View Projects
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 animate-bounce text-arch-400">
+                <a href="#projects" aria-label="프로젝트로 스크롤">
+                    <i class="fas fa-chevron-down text-xl"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <!-- Section Header -->
+                <div class="mb-16 fade-in-up">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-arch-900 mb-4">Selected Works</h2>
+                    <div class="w-12 h-1 bg-arch-900 mb-6"></div>
+                    <p class="text-arch-500 max-w-2xl font-light">2020년부터 현재까지 진행한 주요 건축 설계 프로젝트 모음입니다. 주거, 상업, 공공 시설 등 다양한 스케일의 작업을 확인하실 수 있습니다.</p>
+                </div>
+
+                <!-- Project Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-12">
+                    
+                    <!-- Project 1 -->
+                    <div class="project-card group cursor-pointer fade-in-up">
+                        <div class="relative overflow-hidden aspect-[4/3] bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop" alt="프로젝트 1 썸네일" class="project-image w-full h-full object-cover transition-transform duration-700 ease-in-out" />
+                            <!-- Hover Overlay -->
+                            <div class="project-overlay absolute inset-0 bg-arch-900/80 opacity-0 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="text-white border border-white px-6 py-2 uppercase tracking-widest text-sm hover:bg-white hover:text-arch-900 transition-colors">View Details</span>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs text-arch-500 uppercase tracking-widest mb-1">Residential / 2024</p>
+                            <h3 class="text-xl font-bold text-arch-900 group-hover:text-arch-600 transition-colors">자연을 품은 단독주택 '숨'</h3>
+                            <p class="mt-2 text-arch-600 font-light text-sm line-clamp-2">경기도 양평에 위치한 단독주택으로, 경사지형을 활용하여 주변 산세와 어우러지도록 설계했습니다. 중정을 통해 자연 채광을 극대화했습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card group cursor-pointer fade-in-up" style="transition-delay: 100ms;">
+                        <div class="relative overflow-hidden aspect-[4/3] bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" alt="프로젝트 2 썸네일" class="project-image w-full h-full object-cover transition-transform duration-700 ease-in-out" />
+                            <div class="project-overlay absolute inset-0 bg-arch-900/80 opacity-0 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="text-white border border-white px-6 py-2 uppercase tracking-widest text-sm hover:bg-white hover:text-arch-900 transition-colors">View Details</span>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs text-arch-500 uppercase tracking-widest mb-1">Commercial / 2023</p>
+                            <h3 class="text-xl font-bold text-arch-900 group-hover:text-arch-600 transition-colors">복합문화공간 '더 라인'</h3>
+                            <p class="mt-2 text-arch-600 font-light text-sm line-clamp-2">도심 속 버려진 창고를 리모델링하여 전시, 카페, 작업실이 결합된 복합 공간으로 재탄생시켰습니다. 기존의 철골 구조를 노출하여 인더스트리얼한 감성을 살렸습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card group cursor-pointer fade-in-up" style="transition-delay: 200ms;">
+                        <div class="relative overflow-hidden aspect-[4/3] bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1541885994295-d14fb93cb84a?q=80&w=2070&auto=format&fit=crop" alt="프로젝트 3 썸네일" class="project-image w-full h-full object-cover transition-transform duration-700 ease-in-out" />
+                            <div class="project-overlay absolute inset-0 bg-arch-900/80 opacity-0 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="text-white border border-white px-6 py-2 uppercase tracking-widest text-sm hover:bg-white hover:text-arch-900 transition-colors">View Details</span>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs text-arch-500 uppercase tracking-widest mb-1">Public / 2022</p>
+                            <h3 class="text-xl font-bold text-arch-900 group-hover:text-arch-600 transition-colors">시립 어린이 도서관 제안작</h3>
+                            <p class="mt-2 text-arch-600 font-light text-sm line-clamp-2">어린이들의 창의력을 자극하는 유기적인 곡선 형태의 공간 계획안입니다. 친환경 소재를 적극 사용하고 안전을 최우선으로 고려했습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="project-card group cursor-pointer fade-in-up" style="transition-delay: 300ms;">
+                        <div class="relative overflow-hidden aspect-[4/3] bg-gray-100">
+                            <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2071&auto=format&fit=crop" alt="프로젝트 4 썸네일" class="project-image w-full h-full object-cover transition-transform duration-700 ease-in-out" />
+                            <div class="project-overlay absolute inset-0 bg-arch-900/80 opacity-0 transition-opacity duration-300 flex items-center justify-center">
+                                <span class="text-white border border-white px-6 py-2 uppercase tracking-widest text-sm hover:bg-white hover:text-arch-900 transition-colors">View Details</span>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs text-arch-500 uppercase tracking-widest mb-1">Interior / 2022</p>
+                            <h3 class="text-xl font-bold text-arch-900 group-hover:text-arch-600 transition-colors">스타트업 오피스 인테리어</h3>
+                            <p class="mt-2 text-arch-600 font-light text-sm line-clamp-2">유연한 근무 환경을 지원하는 스마트 오피스 디자인입니다. 모듈형 가구와 개방된 소통 공간을 통해 업무 효율성을 높이는 데 집중했습니다.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 bg-arch-50">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row gap-16 items-center">
+                    
+                    <!-- Portrait Image -->
+                    <div class="w-full lg:w-5/12 fade-in-up">
+                        <div class="relative pb-[120%] lg:pb-0 lg:h-[600px] w-full overflow-hidden">
+                            <!-- 건축가 사진 플레이스홀더 -->
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" alt="건축가 홍길동" class="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                            <!-- 장식용 선 -->
+                            <div class="absolute top-4 left-4 right-4 bottom-4 border border-white/30 z-10 pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Biography & Philosophy -->
+                    <div class="w-full lg:w-7/12 fade-in-up">
+                        <h2 class="text-3xl md:text-4xl font-serif font-bold text-arch-900 mb-6">홍길동 <span class="text-lg text-arch-500 font-sans font-normal ml-2">Hong GilDong, KIRA</span></h2>
+                        <div class="w-12 h-1 bg-arch-900 mb-8"></div>
+                        
+                        <div class="space-y-6 text-arch-700 font-light leading-relaxed">
+                            <p>
+                                건축은 단순히 건물을 짓는 행위를 넘어, 인간의 삶을 담아내는 그릇을 만드는 일이라고 믿습니다. 저는 지난 10년간 다양한 스케일의 프로젝트를 진행하며, 형태적 아름다움과 기능적 합리성의 균형을 찾는 데 집중해 왔습니다.
+                            </p>
+                            <p>
+                                저의 디자인 철학은 <strong>'맥락적 미니멀리즘(Contextual Minimalism)'</strong>입니다. 장식을 최소화하여 본질에 다가가되, 건축물이 놓이는 장소의 지형, 기후, 문화적 맥락을 깊이 이해하고 존중하는 설계를 추구합니다.
+                            </p>
+                            <p>
+                                사용자가 공간 안에서 편안함을 느끼고, 시간의 흐름에 따라 건축물이 주변 환경과 아름답게 나이 들어가는 모습을 그리는 것이 제가 건축을 하는 가장 큰 기쁨입니다.
+                            </p>
+                        </div>
+
+                        <!-- Credentials (Grid) -->
+                        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 pt-8 border-t border-gray-200">
+                            <div>
+                                <h4 class="font-bold text-arch-900 mb-2 uppercase text-sm tracking-wider">Education</h4>
+                                <ul class="text-sm text-arch-600 space-y-2 font-light">
+                                    <li>한국대학교 건축학과 학사 (2010)</li>
+                                    <li>대한대학교 건축대학원 석사 (2012)</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-arch-900 mb-2 uppercase text-sm tracking-wider">Experience</h4>
+                                <ul class="text-sm text-arch-600 space-y-2 font-light">
+                                    <li>A건축사사무소 책임연구원 (2015-2019)</li>
+                                    <li>B건축설계 디자이너 (2012-2015)</li>
+                                    <li>현) 홍길동 건축스튜디오 대표 (2020-)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 bg-white">
+            <div class="container mx-auto px-6 max-w-4xl text-center">
+                <div class="fade-in-up">
+                    <p class="text-sm font-medium tracking-[0.2em] uppercase text-arch-500 mb-2">Let's Work Together</p>
+                    <h2 class="text-3xl md:text-5xl font-serif font-bold text-arch-900 mb-8">새로운 프로젝트를 함께<br/>시작해 볼까요?</h2>
+                    <p class="text-arch-600 font-light mb-12 max-w-2xl mx-auto">
+                        건축 설계, 인테리어 디자인, 공간 컨설팅 등 문의사항이 있으시면 언제든지 연락 주시기 바랍니다. 당신의 이야기를 듣고 최적의 공간 솔루션을 제안해 드립니다.
+                    </p>
+                </div>
+
+                <!-- Contact Info & Form Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left fade-in-up">
+                    
+                    <!-- Contact Information -->
+                    <div class="bg-arch-50 p-8">
+                        <h3 class="text-xl font-bold text-arch-900 mb-6 font-serif">Contact Information</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt mt-1.5 w-6 text-arch-400"></i>
+                                <div>
+                                    <p class="font-medium text-arch-900">Office</p>
+                                    <p class="text-arch-600 font-light mt-1 text-sm">서울특별시 강남구 테헤란로 123<br>건축빌딩 4층, 06234</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-envelope mt-1.5 w-6 text-arch-400"></i>
+                                <div>
+                                    <p class="font-medium text-arch-900">Email</p>
+                                    <a href="mailto:hello@example.com" class="text-arch-600 font-light mt-1 text-sm hover:text-arch-900 transition-colors">hello@gildong-arch.com</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <i class="fas fa-phone-alt mt-1.5 w-6 text-arch-400"></i>
+                                <div>
+                                    <p class="font-medium text-arch-900">Phone</p>
+                                    <a href="tel:+82212345678" class="text-arch-600 font-light mt-1 text-sm hover:text-arch-900 transition-colors">+82 (0)2 1234 5678</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="mt-10 flex space-x-4">
+                            <a href="#" class="w-10 h-10 rounded-full border border-arch-300 flex items-center justify-center text-arch-500 hover:bg-arch-900 hover:text-white hover:border-arch-900 transition-all">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full border border-arch-300 flex items-center justify-center text-arch-500 hover:bg-arch-900 hover:text-white hover:border-arch-900 transition-all">
+                                <i class="fab fa-behance"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full border border-arch-300 flex items-center justify-center text-arch-500 hover:bg-arch-900 hover:text-white hover:border-arch-900 transition-all">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div>
+                        <form id="contactForm" class="space-y-4" onsubmit="event.preventDefault(); alert('메시지가 성공적으로 전송되었습니다. (이것은 데모 양식입니다)');">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-arch-700 mb-1">Name</label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-none focus:outline-none focus:border-arch-900 focus:ring-1 focus:ring-arch-900 transition-colors bg-gray-50" placeholder="이름을 입력해주세요">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-arch-700 mb-1">Email</label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-none focus:outline-none focus:border-arch-900 focus:ring-1 focus:ring-arch-900 transition-colors bg-gray-50" placeholder="이메일 주소를 입력해주세요">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-arch-700 mb-1">Message</label>
+                                <textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-none focus:outline-none focus:border-arch-900 focus:ring-1 focus:ring-arch-900 transition-colors bg-gray-50 resize-none" placeholder="문의하실 내용을 자유롭게 적어주세요"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-arch-900 text-white px-8 py-4 uppercase tracking-widest text-sm font-medium hover:bg-arch-800 transition-colors">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-arch-900 text-arch-300 py-8 border-t border-arch-800">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-sm font-light">
+            <p>&copy; 2024 Hong GilDong Architecture. All rights reserved.</p>
+            <p class="mt-2 md:mt-0">Designed & Built with <i class="fas fa-heart text-red-500 mx-1"></i></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('hidden');
+                // 아이콘 변경 (햄버거 <-> X)
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            }
+
+            mobileMenuBtn.addEventListener('click', toggleMenu);
+            
+            // 모바일 메뉴 링크 클릭 시 메뉴 닫기
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+
+            // 2. Header Style on Scroll
+            const header = document.getElementById('header');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-sm');
+                    header.classList.replace('py-4', 'py-2'); // 스크롤 시 높이 약간 줄임
+                } else {
+                    header.classList.remove('shadow-sm');
+                    header.classList.replace('py-2', 'py-4');
+                }
+            });
+
+            // 3. Scroll Reveal Animation (Intersection Observer)
+            const fadeElements = document.querySelectorAll('.fade-in-up');
+            
+            const appearOptions = {
+                threshold: 0.15, // 요소가 15% 보일 때 애니메이션 실행
+                rootMargin: "0px 0px -50px 0px" // 하단 마진을 주어 조금 더 일찍 나타나게 함
+            };
+
+            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // 한번 나타나면 다시 감지하지 않음
+                    }
+                });
+            }, appearOptions);
+
+            fadeElements.forEach(element => {
+                appearOnScroll.observe(element);
+            });
+
+            // 4. 프로젝트 카드 클릭 이벤트 (상세 페이지 이동 시뮬레이션)
+            const projectCards = document.querySelectorAll('.project-card');
+            projectCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const title = card.querySelector('h3').innerText;
+                    // 실제 환경에서는 여기서 window.location.href = 'project-detail.html' 등으로 이동합니다.
+                    // 현재는 데모이므로 모달 대신 간단한 메시지를 띄웁니다 (alert 규칙에 따라 커스텀 메시지 박스를 쓰는 것이 좋으나, 템플릿의 간결성을 위해 생략하고 콘솔에 로그만 남깁니다.)
+                    console.log(`[페이지 이동 시뮬레이션] '${title}' 상세 페이지로 이동합니다.`);
+                    
+                    // 데모용 피드백 시각 효과 (클릭 시 약간 깜빡임)
+                    card.style.opacity = '0.5';
+                    setTimeout(() => { card.style.opacity = '1'; }, 200);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
